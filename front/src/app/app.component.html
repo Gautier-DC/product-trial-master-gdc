@@ -1,25 +1,76 @@
 <p-toolbar [style]="{ height: '100px' }">
-    <div class="p-toolbar-group-start">
-        <img src="assets/icons/icon-72x72.png" alt="logo" />
-    </div>
-    <div class="p-toolbar-group-center">
-        {{ title }}
-    </div>
-    <div class="p-toolbar-group-end">
-        <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
-    </div>
+  <div class="p-toolbar-group-start">
+    <img src="assets/icons/icon-72x72.png" alt="logo" />
+  </div>
+  <div class="p-toolbar-group-center">
+    {{ title }}
+  </div>
+  <div class="p-toolbar-group-end relative">
+    <p-button
+      icon="pi pi-shopping-cart"
+      severity="info"
+      rounded
+      (onClick)="toggleCart()"
+    >
+    </p-button>
+    @if(cartService.getTotalItems() > 0){
+    <span
+      class="badge absolute right-0 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full text-center"
+    >
+      {{ cartService.getTotalItems() }} </span
+    >}
+  </div>
 </p-toolbar>
-<p-splitter 
-    [panelSizes]="[20, 80]" 
-    [style]="{ height: 'calc(100vh - 100px)' }">
-    <ng-template pTemplate>
-        <div class="w-full">
-            <app-panel-menu />
+<p-dialog
+  header="Votre Panier"
+  [(visible)]="isCartVisible"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+>
+  @if(cartService.getTotalItems() > 0){
+  <ng-container>
+    <ul class='p-0'>
+      @for (product of cartService.getCartItems(); track product.id) {
+      <li class="classic-flex border-bottom py-2 w-full">
+        <img
+          [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' +
+          product.image"
+          alt="{{ product.name }}"
+          class="w-2 h-2 object-cover rounded-md shadow-xs mr-2"
+        />
+        <div class="&quot;flex flex-1 justify-start items-center">
+          <span>{{ product.name }}</span>
+          <span class="font-bold ml-4">{{ product.price }} €</span>
         </div>
-    </ng-template>
-    <ng-template pTemplate>
-        <div class="w-full app-content">
-            <router-outlet></router-outlet>
-        </div>
-    </ng-template>
+        <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          size="small"
+          (onClick)="onRemoveFromCart(product)"
+        />
+      </li>
+      }
+    </ul>
+    <p-button
+      label="Vider le panier"
+      severity="danger"
+      (onClick)="cartService.clearCart()"
+    ></p-button> </ng-container
+  >} @else {
+  <ng-container>
+    <p class="text-gray-500">Votre panier est vide.</p>
+  </ng-container>
+  }
+</p-dialog>
+<p-splitter [panelSizes]="[20, 80]" [style]="{ height: 'calc(100vh - 100px)' }">
+  <ng-template pTemplate>
+    <div class="w-full">
+      <app-panel-menu />
+    </div>
+  </ng-template>
+  <ng-template pTemplate>
+    <div class="w-full app-content">
+      <router-outlet></router-outlet>
+    </div>
+  </ng-template>
 </p-splitter>

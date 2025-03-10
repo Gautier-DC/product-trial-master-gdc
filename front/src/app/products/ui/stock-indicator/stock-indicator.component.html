@@ -1,4 +1,8 @@
-<div class="flex items-center gap-2 text-xs" [ngClass]="inventoryInfo.class">
-    <span>{{inventoryInfo.label}}</span>
-    <span>{{inventoryInfo.icon}}</span>
-</div>
+<p-tag
+  [value]="inventoryInfo.label"
+  [severity]="inventoryInfo.severity"
+  [icon]="'pi ' + inventoryInfo.icon"
+  class="absolute"
+  [style.left.px]="4"
+  [style.top.px]="4"
+/>

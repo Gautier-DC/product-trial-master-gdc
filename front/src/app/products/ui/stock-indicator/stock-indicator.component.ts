@@ -1,26 +1,42 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { Component, Input } from "@angular/core";
+import { TagModule } from "primeng/tag";
 
+export type Severity =
+  | "success"
+  | "warning"
+  | "danger"
+  | "secondary"
+  | "info"
+  | "contrast";
 @Component({
-  selector: 'app-stock-indicator',
+  selector: "app-stock-indicator",
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './stock-indicator.component.html',
-  styleUrl: './stock-indicator.component.css'
+  imports: [CommonModule, TagModule],
+  templateUrl: "./stock-indicator.component.html",
+  styleUrl: "./stock-indicator.component.css",
 })
 export class StockIndicatorComponent {
-  @Input() inventoryStatus: "INSTOCK" | "LOWSTOCK" | "OUTOFSTOCK" = 'INSTOCK';
+  @Input() inventoryStatus: "INSTOCK" | "LOWSTOCK" | "OUTOFSTOCK" = "INSTOCK";
 
-  get inventoryInfo() {
-    switch (this.inventoryStatus){
+  get inventoryInfo(): { label: string; severity: Severity; icon: string } {
+    switch (this.inventoryStatus) {
       case "INSTOCK":
-        return { label: "En stock", class: "text-green-400", icon: "✅" };
+        return { label: "En stock", severity: "success", icon: "pi-check" };
       case "LOWSTOCK":
-        return { label: "Derniers exemplaires", class: "text-orange-500", icon: "⚠️" };
+        return {
+          label: "Derniers exemplaires",
+          severity: "warning",
+          icon: "pi-exclamation-triangle",
+        };
       case "OUTOFSTOCK":
-        return { label: "Épuisé", class: "text-red-500", icon: "❌" };
+        return { label: "Épuisé", severity: "danger", icon: "pi-times" };
       default:
-        return { label: "Inventaire en cours", class: "text-gray-500", icon: "📋" };
+        return {
+          label: "Inventaire en cours",
+          severity: "secondary",
+          icon: "pi-search",
+        };
     }
   }
 }

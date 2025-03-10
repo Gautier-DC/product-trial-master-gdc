@@ -6,46 +6,57 @@
   class="block text-center"
 />
 
-<p-dataView #dv [value]="products()" [layout]="'grid'">
+<p-dataView
+  #dv
+  [value]="products()"
+  [layout]="'grid'"
+  [paginator]="true"
+  [rows]="6"
+>
   <ng-template pTemplate="grid" let-products>
     @for (product of products; track product) {
-    <p-card class="block mb-2 border border-red-500">
-      <span class="font-medium text-secondary text-sm">{{
+    <p-card [style]="{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' , gap: '1rem' }">
+      <span class="font-medium text-secondary text-sm mb-4">{{
         product.category
       }}</span>
-      <img
-        src="{{ product.image }}"
-        alt="{{ product.name }}"
-        class="w-full h-48 object-cover mt-2"
-        (error)="product.image = 'assets/img/error.jpg'"
-      />
+      <div class="relative mx-auto">
+        <img
+          [src]="
+            'https://primefaces.org/cdn/primeng/images/demo/product/' +
+            product.image
+          "
+          alt="{{ product.name }}"
+          class="w-full h-48 object-cover rounded"
+          (error)="product.image = 'assets/img/error.jpg'"
+        />
+        <app-stock-indicator [inventoryStatus]="product.inventoryStatus" />
+      </div>
       <ng-template pTemplate="footer">
         <div class="flex justify-between w-full">
-          <div class="flex-col justify-between gap-12 w-full">
-            <div class="text-lg font-medium text-900">
+          <div class="flex-col justify-between gap-8 w-full">
+            <div class="text-md font-medium text-900">
               {{ product.name }}
             </div>
-            <span class="text-lg font-medium text-900"
+            <span class="text-lg font-semibold text-900"
               >{{ product.price }} €</span
             >
             <app-rating [rating]="product.rating" />
-          </div>
-          <div class="flex-col h-full justify-between shrink-0">
-            <app-stock-indicator [inventoryStatus]="product.inventoryStatus" />
+            <p-button
+              icon="pi pi-shopping-cart"
+              [disabled]="
+                product.inventoryStatus === 'OUTOFSTOCK' ||
+                product.inventoryStatus === undefined
+              "
+              class="stock-badge flex whitespace-nowrap mt-4"
+              label="Ajouter au panier"
+              aria-label="Ajouter au panier"
+              size="small"
+              severity="contrast"
+              (onClick)="onAddToCart(product)"
+              [rounded]="true"
+            />
           </div>
         </div>
-        <!-- <div class="flex gap-3 mt-1">
-                <p-button
-                    label="Modifier"
-                    severity="secondary"
-                    (onClick)="onUpdate(product)"
-                />
-                <p-button
-                    label="Supprimer"
-                    severity="danger"
-                    (onClick)="onDelete(product)"
-                />
-                </div> -->
       </ng-template>
     </p-card>
     }

@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
+import { CartService } from 'app/products/data-access/cart.service';
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
@@ -36,12 +37,15 @@ const emptyProduct: Product = {
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  private readonly cartService = inject(CartService);
+
 
   public readonly products = this.productsService.products;
 
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
+  public isCartVisible = false
   
 
   ngOnInit() {
@@ -81,5 +85,17 @@ export class ProductListComponent implements OnInit {
 
   private closeDialog() {
     this.isDialogVisible = false;
+  }
+
+  onAddToCart(product: Product) {
+    this.cartService.addToCart(product);
+  }
+
+  onRemoveFromCart(product: Product) {
+    this.cartService.removeItem(product);
+  }
+
+  toggleCart() {
+    this.isCartVisible = !this.isCartVisible;
   }
 }
