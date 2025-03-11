@@ -1,0 +1,50 @@
+<div class="mx-auto rounded-md p-6 max-w-xl">
+  <h2 class="text-2xl font-bold">Contactez-nous</h2>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label class="block font-medium" >Email<span class="text-red-500">*</span></label>
+      <input
+        type="email"
+        formControlName="email"
+        class="w-full border p-2 rounded mt-1"
+        placeholder="Votre email"
+      />
+      @if(contactForm.get('email')?.invalid &&
+      contactForm.get('email')?.touched){
+      <p class="text-red-500 text-sm">Un email valide est requis.</p>
+      }
+    </div>
+    <div class="mb-4">
+      <label class="font-medium" 
+      >Votre Message<span class="text-red-500">*</span></label>
+      <textarea
+        formControlName="message"
+        class="w-full border p-2 rounded mt-1"
+        rows="4"
+        placeholder="Tapez ici votre demande..."
+      ></textarea>
+      @if(contactForm.get('message')?.invalid &&
+      contactForm.get('message')?.touched){
+      <p class="text-red-500 text-sm">
+        Le message est obligatoire (max 300 caractères).
+      </p>
+      }
+    </div>
+    <div class="submit-footer">
+      <p-button
+        label="Envoyer"
+        type="submit"
+        class="w-full mb-2"
+        [disabled]="contactForm.invalid"
+      />
+      @if(messageSent){
+      <p-message
+        severity="success"
+        text="Message envoyé avec succès."
+        size="large"
+        icon="pi pi-check"
+      />
+      }
+    </div>
+  </form>
+</div>
