@@ -49,9 +49,7 @@ export class ProductListComponent implements OnInit {
   
 
   ngOnInit() {
-    this.productsService.get().subscribe((data) => {
-      console.log("Liste des produits :", data);
-    });
+    this.productsService.get().subscribe();
   }
 
   public onCreate() {

@@ -14,12 +14,19 @@
   [rows]="6"
 >
   <ng-template pTemplate="grid" let-products>
-    @for (product of products; track product) {
-    <p-card [style]="{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' , gap: '1rem' }">
-      <span class="font-medium text-secondary text-sm mb-4">{{
+    @for (product of products; track product.id) {
+    <p-card
+      [style]="{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        gap: '1rem'
+      }"
+    >
+      <span class="font-medium text-secondary text-sm">{{
         product.category
       }}</span>
-      <div class="relative mx-auto">
+      <div class="relative mx-auto mt-2">
         <img
           [src]="
             'https://primefaces.org/cdn/primeng/images/demo/product/' +
