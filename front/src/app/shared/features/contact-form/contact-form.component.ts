@@ -41,8 +41,7 @@ export class ContactFormComponent {
       this.contactForm.reset();
       setTimeout(() => {
         this.messageSent = false;
-      }
-      , 3000);
+      }, 3000);
     }
   }
 }
